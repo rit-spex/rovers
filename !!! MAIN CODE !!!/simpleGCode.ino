@@ -7,10 +7,10 @@ void setup() {
 }
 
 void loop() {
-  // Read the GCODE from the Raspberry Pi over serial communtication 
+  // Read the GCODE from the Raspberry Pi over serial communtication
   // and set the corresponding information
-  if (Serial.available() > 0 ) {                              // Only run if there is something in the serial buffer 
-    String GCODE = readFromSerial();                    // Custom function to convert the input into an "int"    
+  if (Serial.available() > 0 ) {                              // Only run if there is something in the serial buffer
+    String GCODE = readFromSerial();                    // Custom function to convert the input into an "int"
     Serial.println(GCODE);
   }
   delay(10);        // Wait for a short period to allow motor to respond
