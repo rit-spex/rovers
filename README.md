@@ -1,5 +1,5 @@
 # Rovers
-Welcome, this is the RIT Spex Rover Pi Github. This is the code (as of 4/16/23) that controls the rover.
+Welcome, this is the RIT Spex Rover Github. This is the code (as of 4/16/23) that controls the rover.
 Depending on the active functions, the pi takes inputs from either a predetermined program or an xbox controller.
 It then sends those inputs to the pins on the pi and sends a kill code upon termination.
 The terminal is designed to give outputs for all connections, signals, and disconnections.
