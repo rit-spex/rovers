@@ -8,7 +8,7 @@ The terminal is designed to give outputs for all connections, signals, and disco
 `Joysticks` - Move corresponding side of wheels (left for left and right for right). <br/>
 `Left Bumper` - Reverse controls so that the back of the rover is considered the front. <br/>
 `Right Bumper` - Forward controls sot that the front of the rover is the front. <br/>
-`Triple Click A` - Swaps between slow and normal speed
+`Triple Click A` - Swaps between slow and normal speed. <br/>
 `X` - Terminates Script
 
 ### Colors
