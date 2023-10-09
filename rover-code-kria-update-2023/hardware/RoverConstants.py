@@ -38,9 +38,9 @@ MISSION_FAILURE = 600
 # DRIVE BASE ATTRIBUTES
 WHEEL_RADIUS = 0.1  # (m)
 BASE_WIDTH = 0.75  # (m)
-GAMMA = 0
-ALPHA = 0
-BETA = 0
+GAMMA = [0, 0, 0, 0, 0, 0]
+ALPHA = [0, 0, 0, 0, 0, 0]
+BETA = [0, 0, 0, 0, 0, 0]
 WHEEL_NAMES = [
     "front_left_wheel",
     "middle_left_wheel",

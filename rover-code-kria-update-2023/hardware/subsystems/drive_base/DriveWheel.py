@@ -20,21 +20,7 @@ sys.path.append("../..")
 from controllers.pid_controller import PIDController
 from peripherals.Motor import Motor
 from RoverConstants import *
-
-
-class VelocityPublisher(Node):
-    def __init__(self, name):
-        self.name = name
-        super().__init__(f"{self.name}_velocity_publisher")
-        self.publisher_ = self.create_publisher(
-            Float32, f"velocity_topics/{self.name}_velocity", 10
-        )
-
-    def publish_velocity(self, velocity):
-        msg = Float32()
-        msg.data = velocity
-        self.publisher_.publish(msg)
-        self.get_logger().info(f"Published {self.name} velocity: %f" % velocity)
+from VelocityPublisher import VelocityPublisher
 
 
 class DriveWheel(Motor):
@@ -42,25 +28,28 @@ class DriveWheel(Motor):
         Motor.__init__(self, pwm_pin=pwm_pin)
 
         self.__name = name
-        if "left" in self.__name:
-            side = "left"
-        elif "right" in self.__name:
-            side = "right"
+        self.__wheel_num = WHEEL_NAMES.index(self.__name)
 
+        # Ros2 Subscriber for the velocity of the wheel
         self.velo_sub = self._create_subscription(
-            Float32, f"drive_base/{side}_target_velocity", self.velocity_callback, 10
+            Float32, f"velocity_topics/{self.__name}_velocity", self.velocity_callback, 10
         )
 
-        self.__wheel_num = WHEEL_NAMES.index(self.__name)
+        # ROS2 Publisher to publish the velocity of the wheel
+        self.__velo_pub = VelocityPublisher(self.__name)
+
         self.__velocity = 0.0
         self.__target_velocity = 0.0
-        self.__velo_pub = VelocityPublisher(self.__name)
         self.__wheel_radius = WHEEL_RADIUS
         self.__pid_controller = PIDController(
             kp=KP[self.__wheel_num], ki=KI[self.__wheel_num], kd=KD[self.__wheel_num]
         )
         if pwm_pin is not None:
             self.pwm_pin = self.select_pwm_pin(pwm_pin)
+
+        rclpy.spin(self)
+
+        self.get_logger().info(f"{self.__name} DriveWheel initialized.")
 
     def velocity_callback(self, msg):
         self.__target_velocity = msg.data

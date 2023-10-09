@@ -1,6 +1,6 @@
 import time
 
-from pynq.lib.rpi import GPIO
+from GPIO import GPIO
 
 
 class Motor:
@@ -9,7 +9,7 @@ class Motor:
         self.duty_cycle = 0.0
 
     def select_pwm_pin(self, pin_number):
-        self._pwm_pin = Arduino_IO(pin_number, "out")
+        self._pwm_pin = GPIO(pin_number, "out")
 
     def update_pwm(self):
         current_time = time.monotonic()

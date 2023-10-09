@@ -53,3 +53,42 @@ class GPIO:
         else:
             # Raise an exception if the pin direction is not "in"
             raise Exception(f"Cannot read from GPIO pin {self.pin} with direction {self.direction}")
+
+
+# """
+# GPIO.py
+# Author: Ryan Barry
+# Date: September 19, 2023
+
+# Description:
+# This script demonstrates GPIO control using the Kria Robotics Stack (KRS) on the Xilinx Kria KR260 robotics kit.
+
+# Instructions:
+# 1. Install Kria Robotics Stack on the KR260.
+# 2. Connect the appropriate GPIO pin(s) on the KR260.
+# 3. Run this script to control the GPIO pin state.
+
+# Note: Make sure to refer to the KRS documentation for proper pin mappings and GPIO functions specific to the KR260 board.
+
+# """
+
+# import krs.gpio as gpio
+
+# class GPIO:
+#     def __init__(self, pin_number):
+#         self.pin_number = pin_number
+
+#         # Initialize the GPIO pin
+#         gpio.init()
+#         gpio.set_pin_direction(self.pin_number, gpio.DIRECTION_OUTPUT)
+
+#     def set_state(self, state):
+#         # Set the state of the GPIO pin (HIGH or LOW)
+#         if state == "HIGH":
+#             gpio.set_pin_state(self.pin_number, gpio.STATE_HIGH)
+#         elif state == "LOW":
+#             gpio.set_pin_state(self.pin_number, gpio.STATE_LOW)
+
+#     def cleanup(self):
+#         # Clean up and release the GPIO pin
+#         gpio.cleanup()
