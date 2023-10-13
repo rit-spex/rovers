@@ -30,7 +30,7 @@ from ScienceMission import ScienceMission
 
 sys.path.append("..")
 from hardware.Rover import Rover
-from testing.Test import TestingEnvironment
+from testing.TestingEnvironment import TestingEnvironment
 
 
 class MissionControl:
