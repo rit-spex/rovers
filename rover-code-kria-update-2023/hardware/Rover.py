@@ -1,13 +1,7 @@
 #!/usr/bin/env python3
 """
 File: Rover.py
-
-Description:This file defines the "Rover" class, which represents 
-the main hardware and functionalities of the rover. It acts as an 
-interface between the rover's missions and its various subsystems. 
-The class handles the initialization of the rover's status, peripherals, 
-and subsystems, as well as updating the LEDs based on the rover's status.
-
+Description:The main control module for a rover system.
 Author: Ryan Barry
 Date Created: July 16, 2023
 """
@@ -33,10 +27,28 @@ from subsystems.science_plate.SciencePlate import SciencePlate
 
 
 class Rover(Node, ErrorHandler):
+    """The main control module for a rover system.
+
+    This class represents the main hardware and functionalities of the rover.
+        - It acts as an interface between the rover's missions and its various subsystems.
+        
+    Handles:
+        - initialization of the rover's status
+        - initialization of peripherals
+        - initialization of subsystems
+        - updating the LEDs based on the rover's status
+    
+    args:
+        - Node: A ROS2 node
+        - ErrorHandler: A custom error handler
+    """
+
     def __init__(self):
         ErrorHandler.__init__(self)
         Node.__init__("rover")
-        rclpy.spin(self)
+        rclpy.spin(self) #what is spin?
+        #link for spin -> https://docs.ros2.org/foxy/api/rclpy/api/init_shutdown.html#rclpy.spin_once
+
 
         # Initialize Status
         self.status = RoverStatus()

@@ -16,18 +16,26 @@ from missions.MissionControl import MissionControl
 
 
 def main(args=None):
+    # Initialize the ROS client library
     rclpy.init(args=args)
+
+    # Create an instance of the MissionControl class
     mission_control = MissionControl()
 
+    # loop until ROS shutdown
     while rclpy.ok():
-        mission_control.exec()
-        rclpy.spin_once(mission_control.controller)
+        mission_control.exec()                          # Execute the mission control logic
+        rclpy.spin_once(mission_control.controller)     # Spin the controller node
+        # TODO figure out what spin means   
+        #link for spin once -> https://docs.ros2.org/foxy/api/rclpy/api/init_shutdown.html#rclpy.spin_once
 
+    # Shutdown the ROS client library
     rclpy.shutdown()
 
 
 if __name__ == "__main__":
     try:
         main()
-    except:
+    except Exception as E:
+        print(E.args)
         rclpy.shutdown()
