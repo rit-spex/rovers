@@ -26,11 +26,12 @@ from std_msgs.msg import Int32
 class RoverStatus(Node):
     def __init__(self):
         super().__init__("rover_status")
+        #Constants in the RoverConstants.py file
         self.operating_mode = DRIVER_CONTROL_MODE
         self.comm_link_status = NOT_CONNECTED
         self.waypoint_status = WAYPOINT_INACTIVE
 
-        # Create subscribers
+        # Create subscribers (Asynchronous)
         self.__operating_mode_subscriber = self.create_subscription(
             Int32, "status/operating_mode_topic", self.operating_mode_callback, 10
         )
