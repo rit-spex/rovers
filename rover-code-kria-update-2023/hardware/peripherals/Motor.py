@@ -9,6 +9,7 @@ class Motor:
         self.duty_cycle = 0.0
 
     def select_pwm_pin(self, pin_number):
+        print("bruh")
         self._pwm_pin = GPIO_Peripheral(pin_number, "out")
 
     def update_pwm(self):
