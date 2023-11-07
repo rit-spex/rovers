@@ -7,43 +7,27 @@ It provides functionality to add links to the arm, move individual joints, updat
 
 
 Author: Ryan Barry
-Date Created: August 11, 2023
+Date Created: October 5, 2023
 """
-from math import radians as rad
-import sys
 
-sys.path.append("../..")
-from ArmRobotKinematics import PRISMATIC, REVOLUTE, ArmRobotKinematics
-from Gripper import Gripper
-from RoverPinout import *
-from subsystems.cameras.ArmCamera import ArmCamera
-
-BASE_LENGTH = 0
-SHOULDER_LENGTH = 1
-SHOULDER_ALPHA = -rad(90)
-ELBOW_LENGTH = 1
-ELBOW_LENGTH = 1
-WRIST_TWIST_LENGTH = 0
-WRIST_TWIST_ALPHA = rad(90)
-WRIST_LENGTH = 1
-
+from hardware.subsystems.arm.ArmRobotKinematics import PRISMATIC, REVOLUTE, ArmRobotKinematics
+from hardware.subsystems.cameras.ArmCamera import ArmCamera
 
 class ArmRobot(ArmRobotKinematics):
     def __init__(self):
-        super().__init__(self)
-        # Additional initialization code specific to the arm robot
+        super().__init__()
+        '''
+        Additional initialization code specific to the arm robot:
+        This is where you will define the configuration of your robot with the addLink method
+
+        Example Usage:
+            # Add a link called link0 with a revolute joint and length 1 (m) and a parallel z axis
+            self.link0 = self.addLink(joint_type=REVOLUTE, length=1, alpha=0)
+            # Add a prismatic joint with an initial extended length of 1 (m) and a z axis rotated 90 degrees
+            self.link1 = self.addLink(joint_type=PRISMATIC, length=1, alpha=math.rad(90))
+        '''
         self.camera = ArmCamera()
-
-        self.base = self.addLink(joint_type=REVOLUTE, length=BASE_LENGTH)
-        self.shoulder = self.addLink(joint_type=REVOLUTE, length=SHOULDER_LENGTH, ALPHA=SHOULDER_ALPHA)
-        self.elbow = self.addLink(joint_type=REVOLUTE, length=ELBOW_LENGTH)
-        self.wrist_twist = self.addLink(
-            joint_type=REVOLUTE, length=WRIST_TWIST_LENGTH, alpha=WRIST_TWIST_ALPHA
-        )
-        self.wrist_raise = self.addLink(joint_type=REVOLUTE, length=WRIST_LENGTH)
-
-        self.gripper = Gripper()
-
+         
     def inverse_kinematics(self, target_position, target_orientation):
         # Override the generic inverse kinematics method
         # Implement the specific inverse kinematics calculations for the arm robot

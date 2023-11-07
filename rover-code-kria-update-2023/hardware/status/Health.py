@@ -15,7 +15,7 @@ from std_msgs.msg import Float32
 
 class Health(Node):
     def __init__(self):
-        super().__init__("health_node")
+        super().__init__( "health_node")
         self.temperature_pub = self.create_publisher(Float32, "health/temperature", 10)
         self.voltage_pub = self.create_publisher(Float32, "health/battery_voltage", 10)
         self.current_pub = self.create_publisher(Float32, "health/battery_current", 10)

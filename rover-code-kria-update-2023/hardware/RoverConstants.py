@@ -36,8 +36,8 @@ GREEN = 504
 MISSION_FAILURE = 600
 
 # DRIVE BASE ATTRIBUTES
-WHEEL_RADIUS = 0.1  # (m)
-BASE_WIDTH = 0.75  # (m)
+WHEEL_RADIUS = 8*.0254  # (m)
+BASE_WIDTH = [0.75,0.75,0.75,0.75,0.75,0.75]  # (m)
 GAMMA = [0, 0, 0, 0, 0, 0]
 ALPHA = [0, 0, 0, 0, 0, 0]
 BETA = [0, 0, 0, 0, 0, 0]
@@ -47,8 +47,8 @@ WHEEL_NAMES = [
     "back_left_wheel",
     "front_right_wheel",
     "middle_right_wheel",
-    "back_right_wheel",
+    "back_right_wheel"
 ]
-KP = [1.0, 1.0, 1.0, 1.0, 1.0]
-KI = [0.1, 0.1, 0.1, 0.1, 0.1]
-KD = [0.1, 0.1, 0.1, 0.1, 0.1]
+KP = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+KI = [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+KD = [0.1, 0.1, 0.1, 0.1, 0.1, 0.1]

@@ -9,11 +9,8 @@ the different Status LEDs used in the rover.
 Author: Ryan Barry
 Date Created: August 16, 2023 
 """
-import sys
-
-sys.path.append("../..")
-from peripherals.LED import LED
-from RoverConstants import *
+from hardware.peripherals.LED import LED
+from hardware.RoverConstants import *
 
 
 class CommLinkLED(LED):

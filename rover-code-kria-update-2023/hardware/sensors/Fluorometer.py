@@ -15,4 +15,4 @@ from rclpy.node import Node
 
 class Fluorometer(Node):
     def __init__(self):
-        super().__init__("Science/Fluorometer")
+        super().__init__( "Science_Fluorometer")

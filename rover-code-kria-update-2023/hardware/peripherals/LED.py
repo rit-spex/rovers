@@ -8,10 +8,7 @@ Author: Ryan Barry
 Date Created: July 16, 2023
 """
 
-import sys
-
-sys.path.append("../")
-from RoverConstants import OFF, ON
+from hardware.RoverConstants import OFF, ON
 
 
 class LED:

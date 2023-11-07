@@ -25,26 +25,26 @@ from std_msgs.msg import Int32
 
 class RoverStatus(Node):
     def __init__(self):
-        super().__init__("rover_status")
-
-        #Constants in the RoverConstants.py file
-        self.operating_mode = DRIVER_CONTROL_MODE 
+        super().__init__( "rover_status")
+        self.operating_mode = DRIVER_CONTROL_MODE
         self.comm_link_status = NOT_CONNECTED
         self.waypoint_status = WAYPOINT_INACTIVE
 
-        # Create subscribers (Asyncrounous)
-        self.__operating_mode_subscriber = self._create_subscription(
+        # Create subscribers
+        self.__operating_mode_subscriber = self.create_subscription(
             Int32, "status/operating_mode_topic", self.operating_mode_callback, 10
         )
-        self.__comm_link_status_subscriber = self._create_subscription(
+        self.__comm_link_status_subscriber = self.create_subscription(
             Int32, "status/comm_link_status_topic", self.comm_link_status_callback, 10
         )
-        self.__waypoint_status_subscriber = self._create_subscription(
+        self.__waypoint_status_subscriber = self.create_subscription(
             Int32, "status/waypoint_status_topic", self.waypoint_status_callback, 10
         )
+        
 
+    def spin(self):
         # Start spinning the node
-        rclpy.spin(self)
+        rclpy.spin_once(self)
 
     def operating_mode_callback(self, msg):
         self.operating_mode = msg.data

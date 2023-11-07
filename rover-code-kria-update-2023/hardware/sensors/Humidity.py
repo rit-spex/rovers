@@ -15,4 +15,4 @@ from rclpy.node import Node
 
 class Humidity(Node):
     def __init__(self):
-        super().__init__("Science/Humidity")
+        super().__init__( "Science_Humidity")

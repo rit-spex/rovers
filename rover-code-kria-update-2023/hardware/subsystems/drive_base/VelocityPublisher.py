@@ -19,8 +19,9 @@ class VelocityPublisher(Node):
         self.name = name
         super().__init__(f"{self.name}_velocity_publisher")
         self.publisher_ = self.create_publisher(
-            Float32, f"velocity_topics/{self.name}_velocity", 10
+            Float32, f"velocity_topics_{self.name}_velocity", 10
         )
+        print("created velocity publisher")
 
     def publish_velocity(self, velocity):
         msg = Float32()

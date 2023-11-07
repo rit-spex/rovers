@@ -7,14 +7,11 @@ It includes methods for forward and inverse kinematics calculations.
 Author: Ryan Barry
 Date Created: August 12, 2023
 """
-import sys
-
-sys.path.append("../..")
 
 from math import cos, sin, sqrt
 
 import numpy as np
-from RoverConstants import BASE_WIDTH, WHEEL_RADIUS
+from hardware.RoverConstants import BASE_WIDTH, WHEEL_RADIUS
 
 
 class DifferentialDrive:

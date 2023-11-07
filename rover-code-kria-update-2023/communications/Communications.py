@@ -1,17 +1,14 @@
 #!/usr/bin/env python3
-import sys
 
 import rclpy
 from rclpy.node import Node
-
-sys.path.append("../hardware/")
 from hardware.RoverConstants import *
 from std_msgs.msg import Float32, Int32
 
 
 class Communications(Node):
     def __init__(self):
-        super().__init__("communications")
+        super().__init__( "communications")
 
         # Initialize class variables
         self.waypoint_status = WAYPOINT_INACTIVE

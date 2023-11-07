@@ -10,13 +10,11 @@ Author: Ryan Barry
 Date created: September 14, 2023
 """
 
-import sys
 from math import cos, pi, sin
 
 import numpy as np
 
-sys.path.append("../..")
-from RoverConstants import ALPHA, BASE_WIDTH, BETA, GAMMA, WHEEL_NAMES, WHEEL_RADIUS
+from hardware.RoverConstants import ALPHA, BASE_WIDTH, BETA, GAMMA, WHEEL_NAMES, WHEEL_RADIUS
 
 
 class MobileRobotKinematics:
@@ -26,7 +24,7 @@ class MobileRobotKinematics:
         wheel_names=WHEEL_NAMES,
         wheel_radius=WHEEL_RADIUS,
         L=BASE_WIDTH,
-        alpha=ALPHA,
+        alpha=ALPHA
     ):
         """
         Initializes the `MobileRobotKinematics` instance.
@@ -36,7 +34,6 @@ class MobileRobotKinematics:
         :param L: The distance from the center of the robot to the center of the wheels in meters.
         :param alpha: The angle offset from the robot's x-axis of each wheel
         """
-
         # Define variables
         self.__beta = beta
         self.__wheel_radius = wheel_radius
@@ -48,13 +45,14 @@ class MobileRobotKinematics:
         self.__J1_list = []
         self.__C1_list = []
         self.__J2 = np.eye(self.__num_wheels) * self.__wheel_radius
-        for i, _ in enumerate(self.wheel_names):
+
+        for i, _ in enumerate(self.__wheel_names):
             self.__J1_list.append(
                 np.array(
                     [
                         sin(self.__alpha[i] + self.__beta[i]),
                         -cos(self.__alpha[i] + self.__beta[i]),
-                        -self.L[i] * cos(self.__beta[i]),
+                        -self.__L[i] * cos(self.__beta[i]),
                     ]
                 )
             )
@@ -63,14 +61,15 @@ class MobileRobotKinematics:
                     [
                         cos(self.__alpha[i] + self.__beta[i]),
                         sin(self.__alpha[i] + self.__beta[i]),
-                        self.L[i] * sin(self.__beta[i]),
+                        self.__L[i] * sin(self.__beta[i]),
                     ]
                 )
             )
+        
         self.__J1 = np.array(self.__J1_list).T
         self.__C1 = np.array(self.__C1_list).T
-        self._zeta_dot = np.zeros(3, 1)
-        self._phi = np.zeros(range(self.__num_wheels, 1))
+        self._zeta_dot = np.zeros((3, 1))
+        self._phi = np.zeros((self.__num_wheels, 1))
 
     def calculate_robot_velocity(self, velocities: list):
         self._phi = np.array(velocities)

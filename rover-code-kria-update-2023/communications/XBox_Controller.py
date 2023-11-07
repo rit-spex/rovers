@@ -28,7 +28,7 @@ from sensor_msgs.msg import Joy
 
 class XboxController(Node):
     def __init__(self):
-        super().__init__("xbox_controller")
+        super().__init__( "xbox_controller")
         pygame.init()
         self.joystick = None
         self.button_states = []
