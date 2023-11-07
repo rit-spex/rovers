@@ -11,13 +11,12 @@ Date Created: August 12, 2023
 """
 
 import rclpy
-from rclpy.node import Node
-from std_msgs.msg import Float32
-
 from controllers.pid_controller import PIDController
 from hardware.peripherals.Motor import Motor
 from hardware.RoverConstants import *
 from hardware.subsystems.drive_base.VelocityPublisher import VelocityPublisher
+from rclpy.node import Node
+from std_msgs.msg import Float32
 
 
 class DriveWheel(Motor, Node):
@@ -29,8 +28,10 @@ class DriveWheel(Motor, Node):
         self.__wheel_num = WHEEL_NAMES.index(self.__name)
 
         # Ros2 Subscriber for the velocity of the wheel
-        
-        print(f"Creating a subscription with the name:\nvelocity_topics_{self.__name}_velocity\n{self.velocity_callback}\n...")
+
+        print(
+            f"Creating a subscription with the name:\nvelocity_topics_{self.__name}_velocity\n{self.velocity_callback}\n..."
+        )
         self.velo_sub = self.create_subscription(
             Float32, f"velocity_topics_{self.__name}_velocity", self.velocity_callback, 10
         )
@@ -39,7 +40,7 @@ class DriveWheel(Motor, Node):
         # )
 
         # ROS2 Publisher to publish the velocity of the wheel
-        self.__velo_pub = VelocityPublisher(self.__name)        
+        self.__velo_pub = VelocityPublisher(self.__name)
 
         self.__velocity = 0.0
         self.__target_velocity = 0.0
@@ -52,20 +53,20 @@ class DriveWheel(Motor, Node):
                 """
                 The GPIO class has beeen fixed.
                 The issue right now is sudo permissions to access the GPIO pins.
-                Need to figure out how to get the program access to those. 
+                Need to figure out how to get the program access to those.
                 Might involve vitis/vivado stuff idk, Josh may know more or it may be something that can be found online.
-                
+
                 """
                 self.pwm_pin = self.select_pwm_pin(pwm_pin)
             except Exception as E:
                 print(f"this shit donked out dude {E.args}")
         print("drivewheel")
         print(rclpy.get_global_executor())
-        rclpy.spin_once(self,timeout_sec= 1.0)
+        rclpy.spin_once(self, timeout_sec=1.0)
         print("spin once")
         self.get_logger().info(f"{self.__name} DriveWheel initialized.")
         print("Drivewheel done")
-        
+
     def velocity_callback(self, msg):
         print(f"msg: {msg}")
         print(f"data: {msg.data}")

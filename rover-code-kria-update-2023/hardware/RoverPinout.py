@@ -7,7 +7,7 @@ WHEEL_PINS = {
     f"{WHEEL_NAMES[2]}_pwm": 3,
     f"{WHEEL_NAMES[3]}_pwm": 4,
     f"{WHEEL_NAMES[4]}_pwm": 5,
-    f"{WHEEL_NAMES[5]}_pwm": 6
+    f"{WHEEL_NAMES[5]}_pwm": 6,
 }
 
 # Cameras

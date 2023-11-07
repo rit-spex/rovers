@@ -13,7 +13,6 @@ Date created: September 14, 2023
 from math import cos, pi, sin
 
 import numpy as np
-
 from hardware.RoverConstants import ALPHA, BASE_WIDTH, BETA, GAMMA, WHEEL_NAMES, WHEEL_RADIUS
 
 
@@ -24,7 +23,7 @@ class MobileRobotKinematics:
         wheel_names=WHEEL_NAMES,
         wheel_radius=WHEEL_RADIUS,
         L=BASE_WIDTH,
-        alpha=ALPHA
+        alpha=ALPHA,
     ):
         """
         Initializes the `MobileRobotKinematics` instance.
@@ -65,7 +64,7 @@ class MobileRobotKinematics:
                     ]
                 )
             )
-        
+
         self.__J1 = np.array(self.__J1_list).T
         self.__C1 = np.array(self.__C1_list).T
         self._zeta_dot = np.zeros((3, 1))

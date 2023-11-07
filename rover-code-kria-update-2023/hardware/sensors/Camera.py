@@ -21,8 +21,8 @@ Dependencies:
 """
 
 
-import rclpy
 import cv2
+import rclpy
 from cv_bridge import CvBridge
 from rclpy.node import Node
 from sensor_msgs.msg import Image
@@ -32,7 +32,7 @@ class Camera(Node):
     def __init__(self, name, camera_index):
         self.__name = name
         self.__camera_index = camera_index
-        
+
         super().__init__(f"cameras_{self.__name}_node")
         self.publisher = self.create_publisher(Image, f"cameras/{self.__name}_topic", 10)
         self.timer = self.create_timer(1.0 / 30, self.capture)  # Adjust the capture rate as needed

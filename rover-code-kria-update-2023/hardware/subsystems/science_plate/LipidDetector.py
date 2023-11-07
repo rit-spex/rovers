@@ -8,20 +8,19 @@ Author: Ryan Barry
 Date Created: October 8, 2023
 """
 import rclpy  # Importing the rclpy module for ROS 2 Python client library
-from rclpy.node import Node  # Importing the Node class from rclpy.node module
 from hardware.RoverConstants import LIPID_DETECTED, LIPID_NOT_DETECTED
+from rclpy.node import Node  # Importing the Node class from rclpy.node module
 from std_msgs.msg import Int32  # Importing the Int32 message type from the std_msgs package
 
 
 class LipidDetector(Node):
     def __init__(self):
-        super().__init__( "science_lipid_detector")
+        super().__init__("science_lipid_detector")
         self.lipid_publisher = self.create_publisher(
             Int32, "science_lipid_detection", 10
         )  # Creating a publisher for lipid detection messages
 
         self.lipid_detection = LIPID_NOT_DETECTED
-
 
     def publish(self):  # Method for publishing lipid detection status
         lipid_detection_msg = Int32()  # Creating an instance of the Int32 message type

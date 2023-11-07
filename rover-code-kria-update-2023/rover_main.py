@@ -14,6 +14,7 @@ Date Created: August 26, 2023
 import rclpy
 from missions.MissionControl import MissionControl
 
+
 def main():
     rclpy.init()
     mission_control = MissionControl()

@@ -25,7 +25,7 @@ from std_msgs.msg import Int32
 
 class RoverStatus(Node):
     def __init__(self):
-        super().__init__( "rover_status")
+        super().__init__("rover_status")
         self.operating_mode = DRIVER_CONTROL_MODE
         self.comm_link_status = NOT_CONNECTED
         self.waypoint_status = WAYPOINT_INACTIVE
@@ -40,7 +40,6 @@ class RoverStatus(Node):
         self.__waypoint_status_subscriber = self.create_subscription(
             Int32, "status/waypoint_status_topic", self.waypoint_status_callback, 10
         )
-        
 
     def spin(self):
         # Start spinning the node

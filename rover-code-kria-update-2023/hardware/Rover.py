@@ -14,26 +14,25 @@ Date Created: July 16, 2023
 
 
 import rclpy
-
 from communications.Communications import Communications
 from ErrorHandler import ErrorHandler
-from hardware.status.RoverStatus import RoverStatus
-from hardware.status.StatusLEDs import CommLinkLED, OperatingModeLED, WaypointLED
-from rclpy.node import Node
 from hardware.RoverConstants import *
 from hardware.RoverPinout import *
 from hardware.sensors.GPS import GPS
 from hardware.sensors.LiDAR import LiDAR
+from hardware.status.RoverStatus import RoverStatus
+from hardware.status.StatusLEDs import CommLinkLED, OperatingModeLED, WaypointLED
 from hardware.subsystems.arm.ArmRobot import ArmRobot
 from hardware.subsystems.cameras.FrontCamera import FrontCamera
 from hardware.subsystems.drive_base.DriveBase import DriveBase
 from hardware.subsystems.science_plate.SciencePlate import SciencePlate
+from rclpy.node import Node
 
 
 class Rover(Node, ErrorHandler):
     def __init__(self):
         ErrorHandler.__init__(self)
-        Node.__init__(self,"rover")
+        Node.__init__(self, "rover")
 
         # Initialize Status
         self.status = RoverStatus()

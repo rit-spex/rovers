@@ -8,13 +8,13 @@ Author: Ryan Barry
 Date Created:
 """
 
+from hardware.sensors.Fluorometer import Fluorometer
+from hardware.sensors.Humidity import Humidity
+from hardware.subsystems.cameras.ScienceCamera import ScienceCamera
 from hardware.subsystems.science_plate.Backpack import Backpack
 from hardware.subsystems.science_plate.DNADetector import DNADetector
 from hardware.subsystems.science_plate.HeatBlock import HeatBlock
 from hardware.subsystems.science_plate.LipidDetector import LipidDetector
-from hardware.sensors.Fluorometer import Fluorometer
-from hardware.sensors.Humidity import Humidity
-from hardware.subsystems.cameras.ScienceCamera import ScienceCamera
 
 
 class SciencePlate:

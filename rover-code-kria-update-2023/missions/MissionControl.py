@@ -15,10 +15,7 @@ Date Created: July 16, 2023
 
 
 import rclpy
-from missions.AutonomousNavigation import AutonomousNavigationMission
-from missions.EquipmentServicing import EquipmentServicingMission
-from missions.ExtremeRetrievalDelivery import ExtremeRetrievalDeliveryMission
-from missions.ScienceMission import ScienceMission
+from hardware.Rover import Rover
 from hardware.RoverConstants import (
     AUTONOMOUS,
     EQUIPMENT_SERVICING,
@@ -26,8 +23,10 @@ from hardware.RoverConstants import (
     SCIENCE,
     TEST_MODE,
 )
-
-from hardware.Rover import Rover
+from missions.AutonomousNavigation import AutonomousNavigationMission
+from missions.EquipmentServicing import EquipmentServicingMission
+from missions.ExtremeRetrievalDelivery import ExtremeRetrievalDeliveryMission
+from missions.ScienceMission import ScienceMission
 from testing.TestingEnvironment import TestingEnvironment
 
 

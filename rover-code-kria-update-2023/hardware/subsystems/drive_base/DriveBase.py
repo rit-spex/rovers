@@ -11,17 +11,15 @@ Date Created: August 12, 2023
 """
 
 import numpy as np
-from rclpy.node import Node
 from geometry_msgs.msg import Twist
-
-from std_msgs.msg import Float32
-
+from hardware.RoverConstants import AUTONOMOUS_MODE, WHEEL_NAMES
+from hardware.RoverPinout import *
 from hardware.subsystems.drive_base.DifferentialDrive import DifferentialDrive
 from hardware.subsystems.drive_base.DriveWheel import DriveWheel
 from hardware.subsystems.drive_base.MobileRobotKinematics import MobileRobotKinematics
-from hardware.RoverConstants import AUTONOMOUS_MODE, WHEEL_NAMES
-from hardware.RoverPinout import *
 from hardware.subsystems.drive_base.VelocityPublisher import VelocityPublisher
+from rclpy.node import Node
+from std_msgs.msg import Float32
 
 
 class DriveBase(MobileRobotKinematics, Node):
@@ -30,18 +28,21 @@ class DriveBase(MobileRobotKinematics, Node):
         try:
             Node.__init__(self, "drive_base_node")
             self.left_sub = self.create_subscription(
-                Float32, "drive_base_left_target_velocity",  self.left_callback, 10
+                Float32, "drive_base_left_target_velocity", self.left_callback, 10
             )
             self.right_sub = self.create_subscription(
-                Float32, "drive_base_right_target_velocity",  self.right_callback, 10
+                Float32, "drive_base_right_target_velocity", self.right_callback, 10
             )
             self.rover_sub = self.create_subscription(
-                Twist, "drive_base_target_rover_velocity",  self.rover_callback, 10
+                Twist, "drive_base_target_rover_velocity", self.rover_callback, 10
             )
-            
-            
-            self.left_velo_pub = self.create_publisher(Float32, "drive_base_left_target_velocity", 10)
-            self.right_velo_pub = self.create_publisher(Float32, "drive_base_right_target_velocity", 10)
+
+            self.left_velo_pub = self.create_publisher(
+                Float32, "drive_base_left_target_velocity", 10
+            )
+            self.right_velo_pub = self.create_publisher(
+                Float32, "drive_base_right_target_velocity", 10
+            )
 
             self.operating_mode = operating_mode
             self.target_velocity_old = None
@@ -66,12 +67,13 @@ class DriveBase(MobileRobotKinematics, Node):
                 print("Initializing wheels...")
                 self.wheels[name] = (velo_pub, wheel)
                 print("Finished wheel initialization.")
-                
+
         except Exception as E:
             print("\033[31m")
             print("Error:")
             print(E.args)
             print("\033[0m")
+
     def left_callback(self, msg):
         print(f"\033[32m\tin left_callback\033[0m")
         # Process left target velocity message
@@ -108,7 +110,7 @@ class DriveBase(MobileRobotKinematics, Node):
 
     def run(self):
         print(f"\033[32m\tin run\033[0m")
-        rlcpy.spin_once(self,timeout_sec=1)
+        rlcpy.spin_once(self, timeout_sec=1)
 
         if self.target_velocity != self.target_velocity_old:
             self.inverse_kinematics()
