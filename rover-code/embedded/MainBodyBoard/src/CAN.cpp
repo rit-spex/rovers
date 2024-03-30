@@ -96,7 +96,7 @@ void CAN::CANSniff(const CAN_message_t &msg)
 void CAN::sendMessage( CAN_MB mailBox, Message_ID id, uint8_t message[8])
 {
   // Create a message
-  CAN_message_t msg;
+  CAN_message_t msg = CAN_message_t();
 
   // Set the message ID to 0x123
   msg.id = id;

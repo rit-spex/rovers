@@ -40,22 +40,30 @@ void MainBodyBoard::updateSubsystems(void)
 
     #endif
     
-    can.sendMessage(CAN::CAN_MB::JETSON,CAN::Message_ID::E_STOP, (uint8_t*)1);
+    uint8_t locationA[8] = {35,122,96,00,64,66,15,00};
+    uint8_t locationB[8] = {35,122,96,00,00,00,00,00};
+
+
+
+    uint8_t data[8] = {0,0,0,0,0,0,0,0};
+    can.sendMessage(CAN::CAN_MB::JETSON,CAN::Message_ID::E_STOP, data);
     can.TEST();
     
-    digitalWrite(STATUS_LIGHT_PIN, HIGH);
+    // digitalWrite(STATUS_LIGHT_PIN, HIGH);
 
-    // #ifndef DISABLE_CAN || DISABLE_STATUS_LIGHT
-    // if(can.IsEStop(can.getMessage(CAN::Message_ID::E_STOP)))
-    // {
-    //     statusLightWait = -1;
-    //     digitalWrite(STATUS_LIGHT_PIN, HIGH);
-    // }
-    // else if(statusLightWait < 0)
-    // {
-    //     statusLightWait = 0;
-    // }
-    // #endif
+    
+
+    #ifndef DISABLE_STATUS_LIGHT
+    if(can.IsEStop(can.getMessage(CAN::Message_ID::E_STOP)))
+    {
+        statusLightWait = -1;
+        digitalWrite(STATUS_LIGHT_PIN, HIGH);
+    }
+    else if(statusLightWait < 0)
+    {
+        statusLightWait = 0;
+    }
+    #endif
 
     #ifndef DISABLE_DRIVEBASE
     drive_base.updateVelocity();
