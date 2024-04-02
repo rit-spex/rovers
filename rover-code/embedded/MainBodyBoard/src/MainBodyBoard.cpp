@@ -40,8 +40,8 @@ void MainBodyBoard::updateSubsystems(void)
 
     #endif
     
-    uint8_t locationA[8] = {35,122,96,00,64,66,15,00};
-    uint8_t locationB[8] = {35,122,96,00,00,00,00,00};
+    // uint8_t locationA[8] = {35,122,96,00,64,66,15,00};
+    // uint8_t locationB[8] = {35,122,96,00,00,00,00,00};
 
 
 

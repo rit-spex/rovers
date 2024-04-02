@@ -24,6 +24,7 @@ class DriveBase {
     public:
         DriveBase(CAN *can);
         void updateVelocity();
+        void updateSingleWheel(int wheelIndex, float targetVelocity);
     private:
         // An array of the rover's wheels
         Wheel wheels[NUM_WHEELS];

@@ -10,7 +10,7 @@ If debug is defined, the corresponding subsystem will be serial printed
 
 // #define DISABLE_STATUS_LIGHT
 // #define DISABLE_CAN
-#define DISABLE_DRIVEBASE
+// #define DISABLE_DRIVEBASE
 #define DISABLE_TEMP
 
 #ifndef DISABLE_STATUS_LIGHT

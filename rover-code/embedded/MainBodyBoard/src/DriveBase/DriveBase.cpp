@@ -32,7 +32,7 @@ void DriveBase::getTargetVelocity()
         CAN_message_t msg = m_can->getMessage(CAN::Message_ID::TARGET_VELOCITY);
         for (int i = 0; i < NUM_WHEELS; i++) 
         {
-            if(msg.buf[6]&(1<<i) != 0)//if bit is on
+            if((msg.buf[6]&(1<<i)) != 0)//if bit is on
             {
                 targetVelocity[i] = (float)msg.buf[i] * -1; // This line will change based on message packing
             }
