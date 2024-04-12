@@ -1,38 +1,17 @@
 #!/usr/bin/env python3
 # from pydoc_data import topics
+import rospkg
+import sys
+rospack = rospkg.RosPack()
+package_path = rospack.get_path('constants')
+sys.path.append(package_path + '/src')
+
 import can
 import rospy
-from enum import IntEnum
 from communications.msg import CAN_msg, CAN_FD_msg
+from CAN_Constants import CHANNEL, TOPICS
+import spidev
 
-
-class CHANNEL(IntEnum):
-    JETSON = 0
-    MAIN_BODY = 1
-    SCIENCE_BOARD = 2
-    ARM_BOARD = 3
-
-
-TOPICS = {
-    0: {
-        "id": 0,
-        "name": "E_STOP",
-        "buf": bytearray(8),
-        "channel": CHANNEL.MAIN_BODY,
-    },
-    1: {
-        "id": 1,
-        "name": "TARGET_VELOCITY",
-        "buf": bytearray(8),
-        "channel": CHANNEL.MAIN_BODY,
-    },
-    2: {
-        "id": 2,
-        "name": "CURRENT_VELOCITY",
-        "buf": bytearray(8),
-        "channel": CHANNEL.MAIN_BODY,
-    },
-}
 
 
 class CAN:
@@ -50,6 +29,8 @@ class CAN:
                 )
             )
 
+        self.run()
+
     def send_msg(self, msg):
         with can.Bus(msg.channel) as bus:
             bus_msg = can.Message(arbitration_id=msg.id, data=msg.buf)
@@ -64,7 +45,7 @@ class CAN:
 
 class JETSON_LISTENER(can.Listener):
     def __init__(self) -> None:
-        rospy.init_node("jetson_listener")
+        super().__init__()
 
     def on_message_received(self, msg: can.Message) -> None:
         ros_msg = CAN_FD_msg()
@@ -75,3 +56,9 @@ class JETSON_LISTENER(can.Listener):
         rospy.Publisher(f"/CAN/RX/{TOPICS[msg.arbitration_id]['name']}", CAN_msg).publish(
             ros_msg
         )
+
+def main():
+    can = CAN()
+
+if __name__ == "__main__":
+    main()

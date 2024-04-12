@@ -29,7 +29,7 @@ sys.path.append(package_path + '/src')
 from MobileRobotKinematics import MobileRobotKinematics
 from RoverConstants import WHEEL_NAMES
 from RoverPinout import *
-from CAN import TOPICS
+from CAN_Constants import TOPICS
 from communications.msg import CAN_msg
 
 
@@ -47,7 +47,7 @@ for key, value in TOPICS.items():
         key_checker = True
 
 
-MAX_WHEEL_VEL = 5
+MAX_WHEEL_VEL = 32
         
 
 class DriveBase(MobileRobotKinematics):
@@ -56,9 +56,10 @@ class DriveBase(MobileRobotKinematics):
 
         rospy.init_node("drive_base_node")
         rospy.Subscriber(f"/CAN/RX/{TOPICS[CURRENT_VELOCITY_INDEX]['name']}", CAN_msg, self.current_velocity_callback)
-        rospy.Subscriber("/cmd_vel", Twist, self.target_velocity_callback)
+        rospy.Subscriber("/drive_base/cmd_vel", Twist, self.target_velocity_callback)
         self.velo_pub = rospy.Publisher(f"/CAN/TX/{TOPICS[TARGET_VELOCITY_INDEX]['name']}", CAN_msg, queue_size=10)
 
+        self.new_velocity = False
 
 
         # A dictionary of publishers for the targeted velocities of each wheel
@@ -84,40 +85,32 @@ class DriveBase(MobileRobotKinematics):
     def target_velocity_callback(self, msg: Twist):
         target_vel = [msg.linear.x, msg.linear.y, msg.angular.z]
         self.calculate_wheel_velocities(target_vel)
+        self.new_velocity = True
 
 
-    def rover_callback(self, msg):
-        # Process rover target velocity message
-        x = msg.linear.x
-        y = msg.linear.y
-        z = msg.linear.z
-        w = msg.angular.z
-        self.target_velocity = np.array([[x], [y], [z], [w]])
-
-    def set_right_velo(self, velocity):
-        msg = Float32()
-        msg.data = velocity
-        self.right_velo_pub.publish(msg)
-
-    def set_left_velo(self, velocity):
-        msg = Float32()
-        msg.data = velocity
-        self.left_velo_pub.publish(msg)
-
-    def scale_velo(self, velo):
+    def encoder(self, velo):
         #do our scaling here
-        scaler = velo / MAX_WHEEL_VEL
-        return int(127*scaler + 127)
+        scaler = min(abs(velo / MAX_WHEEL_VEL), 1)
+        return int(255*scaler)
 
     def run(self):
         while not rospy.is_shutdown():
-            velo_can_msg = CAN_msg()
-            velo_can_msg.buf = bytearray(velo_can_msg.buf)
-            velo_can_msg.id = TOPICS[TARGET_VELOCITY_INDEX]['id']
-            for i, velo in enumerate(self._phi.T.tolist()[0]):
-                velo_can_msg.buf[i] = self.scale_velo(velo)
+            if self.new_velocity:
+                velo_can_msg = CAN_msg()
+                velo_can_msg.buf = bytearray(velo_can_msg.buf)
+                velo_can_msg.id = TOPICS[TARGET_VELOCITY_INDEX]['id']
+                phi_list = self._phi.T.tolist()
+                    
+                for i, velo in enumerate(phi_list):
+                    velo_can_msg.buf[i] = self.encoder(velo)
+                    if velo >= 0:
+                        velo_can_msg.buf[6] &= ~(1 << i)
+                    else:
+                        velo_can_msg.buf[6] |= (1 << i)
 
-            self.velo_pub.publish(velo_can_msg)
+
+                self.velo_pub.publish(velo_can_msg)
+                self.new_velocity = False
 
 if __name__ == "__main__":
     drive_base = DriveBase()

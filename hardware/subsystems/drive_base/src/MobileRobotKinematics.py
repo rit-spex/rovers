@@ -15,6 +15,7 @@ from math import cos, pi, sin
 import numpy as np
 import rospkg
 import sys
+import rospy
 
 rospack = rospkg.RosPack()
 package_path = rospack.get_path('constants')
@@ -47,7 +48,8 @@ class MobileRobotKinematics:
         self.__wheel_names = wheel_names
         self.__num_wheels = len(self.__wheel_names)
         self.__alpha = alpha
-        self.__r_theta = np.eye(self.__num_wheels)
+        self.__theta = 0 # Robot's angle relative to world frame
+        self.__r_theta = self.update_heading(self.__theta)
         self.__J1_list = []
         self.__C1_list = []
         self.__J2 = np.eye(self.__num_wheels) * self.__wheel_radius
@@ -72,8 +74,8 @@ class MobileRobotKinematics:
                 )
             )
         
-        self.__J1 = np.array(self.__J1_list).T
-        self.__C1 = np.array(self.__C1_list).T
+        self.__J1 = np.array(self.__J1_list)
+        self.__C1 = np.array(self.__C1_list)
         self._zeta_dot = np.zeros((3, 1))
         self._phi = np.zeros((self.__num_wheels, 1))
 
@@ -84,6 +86,16 @@ class MobileRobotKinematics:
     def calculate_wheel_velocities(self, velocity: list):
         self._zeta_dot = np.array(velocity)
         return self.inverse_kinematics()
+    
+    def update_heading(self, theta):
+        self.__theta = theta
+        self.__r_theta = np.array(
+            [
+                [cos(self.__theta), sin(self.__theta), 0],
+                [-sin(self.__theta), cos(self.__theta), 0],
+                [0, 0, 1],
+            ]
+        )
 
     # Calculates the current linear and angular velocities of the robot
     def forward_kinematics(self):
@@ -105,5 +117,6 @@ class MobileRobotKinematics:
                 [   ...   ]
                 [ wheel_n ]
         """
-        self._phi = np.linalg.inv(self.__J2) @ self.__J1 @ self.__r_theta @ self._zeta_dot
+        self.update_heading(self.__theta)
+        self._phi = np.linalg.pinv(self.__J2) @ self.__J1 @ self.__r_theta @ self._zeta_dot
         return self._phi

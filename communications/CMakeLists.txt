@@ -9,7 +9,7 @@ project(communications)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   message_generation
-  rospy
+  roscpp
   std_msgs
 )
 
