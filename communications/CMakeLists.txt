@@ -10,6 +10,7 @@ project(communications)
 find_package(catkin REQUIRED COMPONENTS
   message_generation
   roscpp
+  rospy
   std_msgs
 )
 

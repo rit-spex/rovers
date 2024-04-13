@@ -85,6 +85,7 @@ class DriveBase(MobileRobotKinematics):
     def target_velocity_callback(self, msg: Twist):
         target_vel = [msg.linear.x, msg.linear.y, msg.angular.z]
         self.calculate_wheel_velocities(target_vel)
+
         self.new_velocity = True
 
 
