@@ -47,7 +47,7 @@ void MainBodyBoard::updateSubsystems(void)
 
     uint8_t data[8] = {0,0,0,0,0,0,0,0};
     can.sendMessage(CAN::CAN_MB::JETSON,CAN::Message_ID::E_STOP, data);
-    can.TEST();
+    //can.TEST();
     
     // digitalWrite(STATUS_LIGHT_PIN, HIGH);
 
