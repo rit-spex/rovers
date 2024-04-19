@@ -5,9 +5,9 @@ enum PWM_PINS {
     PWM_PIN_0 = 2,
     PWM_PIN_1 = 3,
     PWM_PIN_2 = 4,
-    PWM_PIN_3 = 5,
-    PWM_PIN_4 = 6,
-    PWM_PIN_5 = 7
+    PWM_PIN_3 = 9,
+    PWM_PIN_4 = 10,
+    PWM_PIN_5 = 11
 };
 
 enum ENC_A_PINS {
@@ -47,6 +47,6 @@ enum FAN_PINS {
     FAN_PIN_3 = 25
 };
 
-#define STATUS_LIGHT_PIN 26
+#define STATUS_LIGHT_PIN 13
 
 #endif

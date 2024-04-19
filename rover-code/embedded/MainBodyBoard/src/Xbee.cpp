@@ -97,30 +97,60 @@ float Xbee::getCurrentValue(CONTROLLER controller)
     //}
     for(int i = 0; i < 5; i++)
     {
-        Serial.println(findAxisMedian(axisvalues[0]));
+        Serial.println(findAxisMedian(0));
         Serial.println(axisvalues[0][i]);
     }
     return this->axisvalues[0][0];
 }
 
-float Xbee::findAxisMedian(float a[])
+//[0,1,2,5,3,3,3]
+float Xbee::findAxisMedian(int index)
 {
-    int n = 5;
- 
-    /*Here we take two parameters, the beginning of the
-    array and the length n upto which we want the array to
-    be sorted*/
-    std::sort(a, a + n);
-    return a[n / 2];
+    int num_higher = 0;
+    int num_lower = 0;
+    int num_same = 0;
+    int n = sizeof(this->axisvalues[index])/sizeof(this->axisvalues[index][0]);
+    for(int i = 0; i<n; i++)
+    {
+        num_lower=0;
+        num_higher=0;
+        num_same=0;
+        for(int j = 0; j<n; j++)
+        {
+            if(this->axisvalues[index][i] < this->axisvalues[index][j])
+            {
+                num_higher++;
+            }
+            else if(this->axisvalues[index][i] < this->axisvalues[index][j])
+            {
+                num_lower++;
+            }
+            else
+            {
+                num_same++;
+            }
+        }
+        if(abs(num_higher-num_lower) < num_same)
+        {
+            return this->axisvalues[index][i];
+        }
+    }
 }
 
-bool Xbee::findButtonMedian(bool a[])
-{
-    int n = 5;
- 
-    /*Here we take two parameters, the beginning of the
-    array and the length n upto which we want the array to
-    be sorted*/
-    std::sort(a, a + n);
-    return a[n / 2];
+bool Xbee::findButtonMedian(int index)
+{   
+    int num_true = 0;
+    int num_false = 0;
+    for(int i = 0; i<sizeof(this->buttonvalues[index])/sizeof(this->buttonvalues[index][0]); i++)
+    {
+        if(this->buttonvalues[index][i])
+        {
+            num_true++;
+        }
+        else
+        {
+            num_false++;
+        }
+    }
+    return num_true>num_false;
 }

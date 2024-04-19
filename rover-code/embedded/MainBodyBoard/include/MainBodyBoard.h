@@ -30,17 +30,20 @@ class MainBodyBoard {
         ~MainBodyBoard();
 
         void updateSubsystems(void);
+        void drive(float left_axis, float right_axis);
     private:
+
         #ifndef DISABLE_STATUS_LIGHT
         bool statusLightOn = false;
         int statusLightWait = 0;
         #endif
-        #ifndef DISABLE_CAN
-        CAN can = CAN( CAN::CAN_MB::MAIN_BODY );
-        #endif
+
+        // #ifndef DISABLE_CAN
+        // CAN can = CAN( CAN::CAN_MB::MAIN_BODY );
+        // #endif
 
         #ifndef DISABLE_DRIVEBASE
-        DriveBase drive_base = DriveBase(&can);
+        DriveBase drive_base = DriveBase();//&can);
         #endif
 
         #ifndef DISABLE_TEMP

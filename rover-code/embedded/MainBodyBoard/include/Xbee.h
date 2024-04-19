@@ -7,8 +7,8 @@
 class Xbee
 {
 private:
-    float findAxisMedian(float a[]);
-    bool findButtonMedian(bool a[]);
+    float findAxisMedian(int index);
+    bool findButtonMedian(int index);
     bool buttonvalues[6][5];
     float axisvalues[4][5];
     

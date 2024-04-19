@@ -6,13 +6,16 @@
 #include "Motor.h"
 #include "Pinout.h"
 
+#define SPARK_MAX_MIN 1400
+#define SPARK_MAX_MAX 1600
+
 class Motor {
     public:
         Motor();
         Motor(PWM_PINS pwm_pin);
         void setSpeed(float duty_cycle_us);
     private:
-        PWM_PINS pwm_pin;
+        int pwm_pin;
         Servo motor;
 };
 #endif
