@@ -16,7 +16,7 @@ MainBodyBoard mbb;
 // Servo motor4;
 // Servo motor5;
 // Servo motor6;
-//Xbee xbee;
+Xbee xbee;
 
 // void static exitSafeStart(int motor)
 // {
@@ -50,38 +50,74 @@ void setup()
   //mbb = MainBodyBoard();
   Serial.begin(9600);
   Serial2.begin(9600, SERIAL_8N1);  
-  //xbee = Xbee();
+  xbee = Xbee();
   Serial.println("Main Body Board");
 
 
   //analogWriteFrequency(PWM_PIN_0, 100);
-  // motor1.attach(PWM_PIN_0, 1000, 2000);
-  // motor2.attach(PWM_PIN_1, 1000, 2000);
-  // motor3.attach(PWM_PIN_2, 1000, 2000);
-  // motor4.attach(PWM_PIN_3, 1000, 2000);
-  // motor5.attach(PWM_PIN_4, 1000, 2000);
-  // motor6.attach(PWM_PIN_5, 1000, 2000);
+  // motor1.attach(PWM_PIN_0, 1400, 1600);
+  // motor2.attach(PWM_PIN_1, 1400, 1600);
+  // motor3.attach(PWM_PIN_2, 1400, 1600);
+  // motor4.attach(PWM_PIN_3, 1400, 1600);
+  // motor5.attach(PWM_PIN_4, 1400, 1600);
+  // motor6.attach(PWM_PIN_5, 1400, 1600);
 
   //motor.write(100);
-  // motor1.writeMicroseconds(1000);
-  // motor2.writeMicroseconds(1000);
-  // motor3.writeMicroseconds(1000);
-  // motor4.writeMicroseconds(1000);
-  // motor5.writeMicroseconds(1000);
-  // motor6.writeMicroseconds(1000);
+  // motor1.writeMicroseconds(1500);
+  // motor2.writeMicroseconds(1500);
+  // motor3.writeMicroseconds(1500);
+  // motor4.writeMicroseconds(1500);
+  // motor5.writeMicroseconds(1500);
+  // motor6.writeMicroseconds(1500);
   // motor.setSpeed(100);
 }
 
 //bool statusLightOn = false;
 //String input = "";
 
+// difference in speed 0.7
+
 float rightAxis = 0.0;
 float leftAxis = 0.0;
+bool newValues = false;
 
-int counter = 0;
-int lastcounter = 0;
 void loop() 
 {
+  xbee.UpdateValues();
+  float newleftAxis = xbee.getCurrentValue(Xbee::CONTROLLER::LEFT_Y_AXIS);
+  if(newleftAxis != leftAxis)
+  {
+    newValues = true;
+    leftAxis = newleftAxis;
+  }
+  float newrightAxis = xbee.getCurrentValue(Xbee::CONTROLLER::RIGHT_Y_AXIS);
+  if(newrightAxis != rightAxis)
+  {
+    newValues = true;
+    rightAxis = newrightAxis;
+  }
+
+  if(newValues)
+  {
+    Serial.print("Left Axis: ");
+    Serial.print(leftAxis);
+    Serial.print(" Right Axis: ");
+    Serial.println(rightAxis);
+    // motor1.writeMicroseconds(1500 + (leftAxis * 100));
+    // motor2.writeMicroseconds(1500 + (leftAxis * 100));
+    // motor3.writeMicroseconds(1500 + (leftAxis * 100));
+    // motor4.writeMicroseconds(1500 - (rightAxis * 100));
+    // motor5.writeMicroseconds(1500 - (rightAxis * 100));
+    // motor6.writeMicroseconds(1500 - (rightAxis * 100));
+    newValues = false;
+    mbb.drive(-leftAxis, rightAxis);
+  }
+  // Serial.print("error count: ");
+  // Serial.print(xbee.error_count);
+  // Serial.print(" good count: ");
+  // Serial.println(xbee.good_count);
+  delay(40); // 40 is good
+
   //motor.setSpeed(1);
   //motor.updateSingleWheel(1, 1);
   // motor1.writeMicroseconds(1000);
@@ -98,49 +134,50 @@ void loop()
   //}
   //Serial.println(result);
   //motor.writeMicroseconds(1700);
-  if(lastcounter != Serial2.available())
-  {
-    counter = 0;
-    lastcounter = Serial2.available();
-    while(Serial2.available() > 3)
-  {
-    //Serial.println("Serial2 is available");
-    int input = Serial2.read();
-    if(input == 0xDE)
-    {
-      float joy1 = Serial2.read();
-      float joy2 = Serial2.read();
-      if(joy1 > 200)
-      {
-        Serial.println("Ignore");
-      }
-      else
-      {
-        Serial.print("joy1 ");
-        //Serial.print(joy1, DEC);
-        leftAxis = (joy1 - 100.0) / 100.0;
-        Serial.println(leftAxis);
-        // motor1.writeMicroseconds(1500 + (joy1 - 100));
-        // motor2.writeMicroseconds(1500 + (joy1 - 100));
-        // motor3.writeMicroseconds(1500 + (joy1 - 100));
-      }
-      if(joy2 > 200)
-      {
-        Serial.println("Ignore");
-      }
-      else
-      {
-        Serial.print("joy2 ");
-        //Serial.print(joy2, DEC);
-        rightAxis = (joy2 - 100.0) / 100.0;
-        Serial.println(rightAxis);
-        // motor4.writeMicroseconds(1500 - (joy2 + 100));
-        // motor5.writeMicroseconds(1500 - (joy2 + 100));
-        // motor6.writeMicroseconds(1500 - (joy2 + 100));
-      }
-    }
-    mbb.drive(leftAxis, rightAxis);
-  }
+  // if(lastcounter != Serial2.available())
+  // {
+  //   gotSignal = true;
+  //   counter = 0;
+  //   lastcounter = Serial2.available();
+  //   while(Serial2.available() > 3)
+  // {
+  //   //Serial.println("Serial2 is available");
+  //   int input = Serial2.read();
+  //   if(input == 0xDE)
+  //   {
+  //     float joy1 = Serial2.read();
+  //     float joy2 = Serial2.read();
+  //     if(joy1 > 200)
+  //     {
+  //       Serial.println("Ignore");
+  //     }
+  //     else
+  //     {
+  //       Serial.print("joy1 ");
+  //       //Serial.print(joy1, DEC);
+  //       leftAxis = (joy1 - 100.0) / 100.0;
+  //       Serial.println(leftAxis);
+  //       // motor1.writeMicroseconds(1500 + (joy1 - 100));
+  //       // motor2.writeMicroseconds(1500 + (joy1 - 100));
+  //       // motor3.writeMicroseconds(1500 + (joy1 - 100));
+  //     }
+  //     if(joy2 > 200)
+  //     {
+  //       Serial.println("Ignore");
+  //     }
+  //     else
+  //     {
+  //       Serial.print("joy2 ");
+  //       //Serial.print(joy2, DEC);
+  //       rightAxis = (joy2 - 100.0) / 100.0;
+  //       Serial.println(rightAxis);
+  //       // motor4.writeMicroseconds(1500 - (joy2 + 100));
+  //       // motor5.writeMicroseconds(1500 - (joy2 + 100));
+  //       // motor6.writeMicroseconds(1500 - (joy2 + 100));
+  //     }
+  //   }
+  //   mbb.drive(-leftAxis, rightAxis);
+  // }
     //mbb.updateSubsystems();
     //input += (char)Serial2.read();
     //Serial.println( (char)Serial2.read());
@@ -163,30 +200,30 @@ void loop()
     //  statusLightOn = true;
     //}
     
-  }
-  else
-  {
-    counter++;
-  }
+  // }
+  // else if(gotSignal)
+  // {
+  //   counter++;
+  // }
   
-  if(counter > 30)
-  {
+  // if(counter > 30)
+  // {
     //motor1.writeMicroseconds(1500);
     //motor2.writeMicroseconds(1500);
     //motor3.writeMicroseconds(1500);
     //motor4.writeMicroseconds(1500);
     //motor5.writeMicroseconds(1500);
     //motor6.writeMicroseconds(1500);
-    mbb.drive(0.0, 0.0);
-    digitalWrite(STATUS_LIGHT_PIN, HIGH);    
+  //   mbb.drive(0.0, 0.0);
+  //   digitalWrite(STATUS_LIGHT_PIN, HIGH);    
 
-    while (true)
-    {
-      /* code */
-    } 
-  }
+  //   while (true)
+  //   {
+  //     /* code */
+  //   } 
+  // }
   
-  //setMotorSpeed(400,15);
-  delay(100);
+  // //setMotorSpeed(400,15);
+  // delay(100);
 
 }

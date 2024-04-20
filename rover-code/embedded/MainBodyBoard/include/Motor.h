@@ -6,8 +6,8 @@
 #include "Motor.h"
 #include "Pinout.h"
 
-#define SPARK_MAX_MIN 1400
-#define SPARK_MAX_MAX 1600
+#define SPARK_MAX_MIN 1350
+#define SPARK_MAX_MAX 1650
 
 class Motor {
     public:

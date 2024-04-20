@@ -3,16 +3,26 @@
 
 #include <map>
 
+#define SAVE_SIZE 5
+#define START_COMMAND 0xde
+
+static int bigserialbuffer[16384];
 
 class Xbee
 {
 private:
+    int numNoSignal;
+    int lastSignalCount;
+    bool isDisabled = false;
+    bool firstConnected = false;
+
     float findAxisMedian(int index);
     bool findButtonMedian(int index);
-    bool buttonvalues[6][5];
-    float axisvalues[4][5];
-    
-    //std::map<int, bool> translate = 
+
+    bool buttonvalues[6][SAVE_SIZE];
+    float axisvalues[4][SAVE_SIZE];
+
+    //std::map<int, bool> translate =
     //{
     //    {0xcf , 1}, {0xcd , 0}, //A
     //    {0xd1 , 1}, {0xd2 , 0}, //B
@@ -29,6 +39,9 @@ private:
     int currentHead = 0;
 
 public:
+    long long error_count = 0;
+    long long good_count = 0;
+
     enum CONTROLLER
     {
         LEFT_Y_AXIS = 0,
@@ -38,7 +51,7 @@ public:
         A_BUTTON = 4,
         B_BUTTON = 5,
         X_BUTTON = 6,
-        Y_BUTTON = 7,        
+        Y_BUTTON = 7,
         LB_BUTTON = 8,
         RB_BUTTON = 9,
     };
