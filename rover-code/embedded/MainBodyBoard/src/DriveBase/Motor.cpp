@@ -11,6 +11,6 @@ Motor::Motor()
 
 void Motor::setSpeed(float duty_cycle_us) 
 {
-    Serial.println(duty_cycle_us);
+    //Serial.println(duty_cycle_us);
     motor.writeMicroseconds(duty_cycle_us);
 }

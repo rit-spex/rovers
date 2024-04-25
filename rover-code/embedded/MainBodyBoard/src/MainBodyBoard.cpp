@@ -15,7 +15,7 @@ MainBodyBoard::~MainBodyBoard()
 void MainBodyBoard::updateSubsystems(void)
 {
 
-                digitalWrite(STATUS_LIGHT_PIN, HIGH);
+    digitalWrite(STATUS_LIGHT_PIN, HIGH);
 
     #ifndef DISABLE_STATUS_LIGHT
     if(statusLightWait == 0)

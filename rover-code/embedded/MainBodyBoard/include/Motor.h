@@ -6,8 +6,10 @@
 #include "Motor.h"
 #include "Pinout.h"
 
-#define SPARK_MAX_MIN 1350
-#define SPARK_MAX_MAX 1650
+#define PERCENT_MAX 0.3
+
+#define SPARK_MAX_MIN (1500 - 500 * PERCENT_MAX)
+#define SPARK_MAX_MAX (1500 + 500 * PERCENT_MAX)
 
 class Motor {
     public:

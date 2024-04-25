@@ -2,11 +2,12 @@
 #define XBEE_H
 
 #include <map>
+#include "Pinout.h"
 
-#define SAVE_SIZE 5
+#define SAVE_SIZE 3
 #define START_COMMAND 0xde
 
-static int bigserialbuffer[16384];
+//static int bigserialbuffer[16384];
 
 class Xbee
 {
@@ -19,8 +20,10 @@ private:
     float findAxisMedian(int index);
     bool findButtonMedian(int index);
 
-    bool buttonvalues[6][SAVE_SIZE];
-    float axisvalues[4][SAVE_SIZE];
+    void intToBinary(int n, bool *bin);
+
+    bool buttonvalues[8][SAVE_SIZE];
+    float axisvalues[2][SAVE_SIZE];
 
     //std::map<int, bool> translate =
     //{
@@ -44,16 +47,16 @@ public:
 
     enum CONTROLLER
     {
-        LEFT_Y_AXIS = 0,
-        RIGHT_Y_AXIS = 1,
-        LEFT_TRIGGER = 2,
-        RIGHT_TRIGGER = 3,
-        A_BUTTON = 4,
-        B_BUTTON = 5,
-        X_BUTTON = 6,
-        Y_BUTTON = 7,
-        LB_BUTTON = 8,
-        RB_BUTTON = 9,
+        LEFT_Y_AXIS = 0, // left drive 
+        RIGHT_Y_AXIS = 1, //right drive
+        LEFT_TRIGGER = 2, // j1 left
+        RIGHT_TRIGGER = 3, // j1 right
+        A_BUTTON = 4, // grip open
+        B_BUTTON = 5, // grip close
+        X_BUTTON = 6, // j3 down
+        Y_BUTTON = 7, // j3 up
+        LB_BUTTON = 8, // j2 down
+        RB_BUTTON = 9, // j2 up
     };
 
     Xbee();

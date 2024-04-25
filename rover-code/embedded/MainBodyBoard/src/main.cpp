@@ -2,12 +2,23 @@
 #include "../include/MainBodyBoard.h"
 #include "../include/Motor.h"
 #include "../include/Xbee.h"
+//#include "../include/Arm.h"
 #include <Servo.h>
 #include <Wire.h>
+
+// unicast mode
+// Configure the DL/DH of the xbee to the SL/SH of the xbee talk directly to each other
+// Configure the RR (MAC retries to 0) - doesn't wait for an ACK
+// RO = 0; packetization timeout to 0 - doesn't wait for an
+// NP - Maximum number of bytes;
+
+// xbee recomend 10ms delay between packets
 
 //int armMotor = 15;
 
 MainBodyBoard mbb;
+//Arm arm;
+Xbee xbee;
 //DriveBase motor = DriveBase();
 //Wheel motor = Wheel(PWM_PINS::PWM_PIN_0);
 // Servo motor1;
@@ -16,7 +27,7 @@ MainBodyBoard mbb;
 // Servo motor4;
 // Servo motor5;
 // Servo motor6;
-Xbee xbee;
+
 
 // void static exitSafeStart(int motor)
 // {
@@ -42,18 +53,23 @@ Xbee xbee;
 
 void setup() 
 {
-  //Wire.begin();
-  //exitSafeStart(armMotor);
-  //pinMode(PWM_PIN_0, OUTPUT);
   pinMode(STATUS_LIGHT_PIN, OUTPUT);
   digitalWrite(STATUS_LIGHT_PIN, LOW);
-  //mbb = MainBodyBoard();
   Serial.begin(9600);
   Serial2.begin(9600, SERIAL_8N1);  
   xbee = Xbee();
+  //arm = Arm();
+  //mbb = MainBodyBoard();
   Serial.println("Main Body Board");
 
-
+    //   Wire.begin();
+    // delay(20);
+    // Wire.beginTransmission(ELBOW_I2C);
+    // Wire.write(0x83);  // Exit safe start
+    // Wire.endTransmission();
+    // delay(20);
+    // arm.tic.exitSafeStart();
+    // delay(20);
   //analogWriteFrequency(PWM_PIN_0, 100);
   // motor1.attach(PWM_PIN_0, 1400, 1600);
   // motor2.attach(PWM_PIN_1, 1400, 1600);
@@ -72,13 +88,17 @@ void setup()
   // motor.setSpeed(100);
 }
 
-//bool statusLightOn = false;
-//String input = "";
-
-// difference in speed 0.7
-
 float rightAxis = 0.0;
 float leftAxis = 0.0;
+bool aButton = false;
+bool bButton = false;
+bool xButton = false;
+bool yButton = false;
+bool lbButton = false;
+bool rbButton = false;
+bool ltButton = false;
+bool rtButton = false;
+
 bool newValues = false;
 
 void loop() 
@@ -96,13 +116,77 @@ void loop()
     newValues = true;
     rightAxis = newrightAxis;
   }
-
+  bool newAButton = xbee.getCurrentValue(Xbee::CONTROLLER::A_BUTTON);
+  if(newAButton != aButton)
+  {
+    newValues = true;
+    aButton = newAButton;
+  }
+  bool newBButton = xbee.getCurrentValue(Xbee::CONTROLLER::B_BUTTON);
+  if(newBButton != bButton)
+  {
+    newValues = true;
+    bButton = newBButton;
+  }
+  bool newXButton = xbee.getCurrentValue(Xbee::CONTROLLER::X_BUTTON);
+  if(newXButton != xButton)
+  {
+    newValues = true;
+    xButton = newXButton;
+  }
+  bool newYButton = xbee.getCurrentValue(Xbee::CONTROLLER::Y_BUTTON);
+  if(newYButton != yButton)
+  {
+    newValues = true;
+    yButton = newYButton;
+  }
+  bool newLBButton = xbee.getCurrentValue(Xbee::CONTROLLER::LB_BUTTON);
+  if(newLBButton != lbButton)
+  {
+    newValues = true;
+    lbButton = newLBButton;
+  }
+  bool newRBButton = xbee.getCurrentValue(Xbee::CONTROLLER::RB_BUTTON);
+  if(newRBButton != rbButton)
+  {
+    newValues = true;
+    rbButton = newRBButton;
+  }
+  bool newLTButton = xbee.getCurrentValue(Xbee::CONTROLLER::LEFT_TRIGGER);
+  if(newLTButton != ltButton)
+  {
+    newValues = true;
+    ltButton = newLTButton;
+  }
+  bool newRTButton = xbee.getCurrentValue(Xbee::CONTROLLER::RIGHT_TRIGGER);
+  if(newRTButton != rtButton)
+  {
+    newValues = true;
+    rtButton = newRTButton;
+  }
   if(newValues)
   {
     Serial.print("Left Axis: ");
     Serial.print(leftAxis);
     Serial.print(" Right Axis: ");
-    Serial.println(rightAxis);
+    Serial.print(rightAxis);
+    Serial.print(" A Button: ");
+    Serial.print(aButton);
+    Serial.print(" B Button: ");
+    Serial.print(bButton);
+    Serial.print(" X Button: ");
+    Serial.print(xButton);
+    Serial.print(" Y Button: ");
+    Serial.print(yButton);
+    Serial.print(" LB Button: ");
+    Serial.print(lbButton);
+    Serial.print(" RB Button: ");
+    Serial.print(rbButton);
+    Serial.print(" LT Button: ");
+    Serial.print(ltButton);
+    Serial.print(" RT Button: ");
+    Serial.println(rtButton);
+    mbb.drive(-leftAxis, rightAxis);
     // motor1.writeMicroseconds(1500 + (leftAxis * 100));
     // motor2.writeMicroseconds(1500 + (leftAxis * 100));
     // motor3.writeMicroseconds(1500 + (leftAxis * 100));
@@ -110,14 +194,16 @@ void loop()
     // motor5.writeMicroseconds(1500 - (rightAxis * 100));
     // motor6.writeMicroseconds(1500 - (rightAxis * 100));
     newValues = false;
-    mbb.drive(-leftAxis, rightAxis);
-  }
+    //mbb.drive(-leftAxis, rightAxis);
+    }
+    //mbb.drive(-leftAxis, rightAxis);
   // Serial.print("error count: ");
   // Serial.print(xbee.error_count);
   // Serial.print(" good count: ");
   // Serial.println(xbee.good_count);
+  //arm.moveElbow(Arm::Direction::FORWARD);
   delay(40); // 40 is good
-
+  //Serial.println("Shoulder Forward");
   //motor.setSpeed(1);
   //motor.updateSingleWheel(1, 1);
   // motor1.writeMicroseconds(1000);
