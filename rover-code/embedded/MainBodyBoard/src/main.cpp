@@ -2,7 +2,7 @@
 #include "../include/MainBodyBoard.h"
 #include "../include/Motor.h"
 #include "../include/Xbee.h"
-//#include "../include/Arm.h"
+#include "../include/Arm.h"
 #include <Servo.h>
 #include <Wire.h>
 
@@ -17,10 +17,8 @@
 //int armMotor = 15;
 
 MainBodyBoard mbb;
-//Arm arm;
+Arm arm;
 Xbee xbee;
-//DriveBase motor = DriveBase();
-//Wheel motor = Wheel(PWM_PINS::PWM_PIN_0);
 // Servo motor1;
 // Servo motor2;
 // Servo motor3;
@@ -57,19 +55,32 @@ void setup()
   digitalWrite(STATUS_LIGHT_PIN, LOW);
   Serial.begin(9600);
   Serial2.begin(9600, SERIAL_8N1);  
+  
   xbee = Xbee();
-  //arm = Arm();
-  //mbb = MainBodyBoard();
+
+  arm.startUp();
+
+  // start everything that is needed for arm
+  Wire.begin();
+  Wire.setSCL(19);
+  Wire.setSDA(18);
+
+  delay(100);
+  Wire.beginTransmission(BASE_I2C_ID);
+  Wire.write(0x83);  // Exit safe start
+  Wire.endTransmission();
+  delay(20);
+
+  // Initialize the Tic object
+  arm.tic.exitSafeStart();
+
+  arm.moveShoulder(Arm::Direction::OFF);
+  arm.moveWrist(Arm::Direction::OFF);
+  arm.moveBase(Arm::Direction::OFF);
+  arm.moveClaw(Arm::Direction::OFF);
+
   Serial.println("Main Body Board");
 
-    //   Wire.begin();
-    // delay(20);
-    // Wire.beginTransmission(ELBOW_I2C);
-    // Wire.write(0x83);  // Exit safe start
-    // Wire.endTransmission();
-    // delay(20);
-    // arm.tic.exitSafeStart();
-    // delay(20);
   //analogWriteFrequency(PWM_PIN_0, 100);
   // motor1.attach(PWM_PIN_0, 1400, 1600);
   // motor2.attach(PWM_PIN_1, 1400, 1600);
@@ -186,16 +197,70 @@ void loop()
     Serial.print(ltButton);
     Serial.print(" RT Button: ");
     Serial.println(rtButton);
+
     mbb.drive(-leftAxis, rightAxis);
+
+    if(aButton && !bButton)
+    {
+      arm.moveClaw(Arm::Direction::FORWARD);
+    } 
+    else if(bButton && !aButton)
+    {
+      arm.moveClaw(Arm::Direction::REVERSE);
+    }
+    else
+    {
+      arm.moveClaw(Arm::Direction::OFF);
+    }
+
+    if(xButton && !yButton)
+    {
+      arm.moveWrist(Arm::Direction::FORWARD);
+    } 
+    else if(yButton && !xButton)
+    {
+      arm.moveWrist(Arm::Direction::REVERSE);
+    }
+    else
+    {
+      arm.moveWrist(Arm::Direction::OFF);
+    }
+
+    if(lbButton && !rbButton)
+    {
+      arm.moveShoulder(Arm::Direction::FORWARD);
+    } 
+    else if(rbButton && !lbButton)
+    {
+      arm.moveShoulder(Arm::Direction::REVERSE);
+    }
+    else
+    {
+      arm.moveShoulder(Arm::Direction::OFF);
+    }
+
+    if(ltButton && !rtButton)
+    {
+      arm.moveBase(Arm::Direction::FORWARD);
+    } 
+    else if(rtButton && !ltButton)
+    {
+      arm.moveBase(Arm::Direction::REVERSE);
+    }
+    else
+    {
+      arm.moveBase(Arm::Direction::OFF);
+    }
+
     // motor1.writeMicroseconds(1500 + (leftAxis * 100));
     // motor2.writeMicroseconds(1500 + (leftAxis * 100));
     // motor3.writeMicroseconds(1500 + (leftAxis * 100));
     // motor4.writeMicroseconds(1500 - (rightAxis * 100));
     // motor5.writeMicroseconds(1500 - (rightAxis * 100));
     // motor6.writeMicroseconds(1500 - (rightAxis * 100));
+
     newValues = false;
-    //mbb.drive(-leftAxis, rightAxis);
-    }
+  }
     //mbb.drive(-leftAxis, rightAxis);
   // Serial.print("error count: ");
   // Serial.print(xbee.error_count);

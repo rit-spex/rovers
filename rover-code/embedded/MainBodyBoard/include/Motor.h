@@ -13,8 +13,8 @@
 
 class Motor {
     public:
-        Motor();
         Motor(PWM_PINS pwm_pin);
+        ~Motor();
         void setSpeed(float duty_cycle_us);
     private:
         int pwm_pin;

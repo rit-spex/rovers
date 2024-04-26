@@ -55,8 +55,8 @@ void DriveBase::getTargetVelocity()
 
 void DriveBase::drive(float left_axis, float right_axis)
 {
-    Serial.println(fabs(left_axis - right_axis));
-    Serial.println(0.14/PERCENT_MAX);
+    //Serial.println(fabs(left_axis - right_axis));
+    //Serial.println(0.14/PERCENT_MAX);
     if (fabs(fabs(left_axis) - fabs(right_axis)) < (0.14/PERCENT_MAX))
     {
         updateSingleWheel(0, left_axis);

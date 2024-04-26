@@ -5,7 +5,7 @@ enum PWM_PINS {
     PWM_PIN_0 = 2,
     PWM_PIN_1 = 3,
     PWM_PIN_2 = 4,
-    PWM_PIN_3 = 9,
+    PWM_PIN_3 = 12, // change to 12
     PWM_PIN_4 = 10,
     PWM_PIN_5 = 11
 };

@@ -69,6 +69,6 @@ void TempSubsystem::updateFans()
         float deltaPower = MAX_FAN_SPEED - MIN_FAN_SPEED;
         
         int power = (avgTemp - MIN_TEMP) / deltaTemp * deltaPower + MIN_FAN_SPEED;
-        setFansPower(0); // change later
+        setFansPower(power); // change later
     }
 }

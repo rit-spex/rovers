@@ -1,8 +1,8 @@
 #include "../../include/Wheel.h"
 
-Wheel::Wheel(PWM_PINS pwm_pin)
+Wheel::Wheel(PWM_PINS pwm_pin):
+    motor(pwm_pin)
 {
-    this->motor = Motor(pwm_pin);
     this->targetSpeed = 0;
     this->currentSpeed = 0;
 }
