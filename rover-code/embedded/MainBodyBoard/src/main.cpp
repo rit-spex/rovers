@@ -52,11 +52,13 @@ Xbee xbee;
 void setup() 
 {
   pinMode(STATUS_LIGHT_PIN, OUTPUT);
-  digitalWrite(STATUS_LIGHT_PIN, LOW);
+  digitalWrite(STATUS_LIGHT_PIN, HIGH);
   Serial.begin(9600);
   Serial2.begin(9600, SERIAL_8N1);  
   
   xbee = Xbee();
+
+  delay(5000);
 
   arm.startUp();
 
@@ -81,6 +83,8 @@ void setup()
 
   Serial.println("Main Body Board");
 
+  delay(5000);
+  digitalWrite(STATUS_LIGHT_PIN, LOW);
   //analogWriteFrequency(PWM_PIN_0, 100);
   // motor1.attach(PWM_PIN_0, 1400, 1600);
   // motor2.attach(PWM_PIN_1, 1400, 1600);

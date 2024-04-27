@@ -14,9 +14,9 @@
 
 // I2C device number
 #define BASE_I2C_ID 15 // brushed motor
-#define BASE_MAX_SPEED 3200
+#define BASE_MAX_SPEED 800
 #define CLAW_I2C_ID 16 // stepper motor
-#define CLAW_MAX_SPEED (100 * 10000) // 100 steps per second
+#define CLAW_MAX_SPEED (200 * 10000) // 100 steps per second
 
 class Arm
 {
@@ -43,7 +43,7 @@ class Arm
     private:
 
         // Changing this time will change the motor speeds 30 us seems to be a good starting speed
-        int time = 30; // time in microseconds
+        int time = 80; // time in microseconds <- lower num mean faster fun
 };
 
 #endif
